@@ -32,6 +32,8 @@ libdir = join_paths(prefix, get_option('libdir'))
 sysconfdir = join_paths(prefix, get_option('sysconfdir'))
 localstatedir = join_paths(prefix, get_option('localstatedir'))
 
+open5gs_build_dir = meson.current_build_dir()
+
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
 
@@ -132,7 +134,8 @@ message('\n'.join([
   '        bindir:                       ' + bindir,
   '        sysconfdir:                   ' + sysconfdir,
   '        localstatedir:                ' + localstatedir,
-  '        source code location:         ' + meson.source_root(),
+  '        build location:               ' + meson.current_build_dir(),
+  '        source location:              ' + meson.current_source_dir(),
   '        compiler:                     ' + cc.get_id(),
   '        debugging support:            ' + get_option('buildtype'),
   '',
@@ -143,8 +146,8 @@ if cppcheck.found()
     run_target('analyze-cppcheck',
     command : [ 'misc/static_code_analyze.sh',
         cppcheck.path(),
-        meson.build_root(),
-        meson.source_root()
+        meson.current_build_dir(),
+        meson.current_source_dir()
         ]
     )
 endif
@@ -153,8 +156,8 @@ if clangtidy.found()
     run_target('analyze-clang-tidy',
     command : [ 'misc/static_code_analyze.sh',
         clangtidy.path(),
-        meson.build_root(),
-        meson.source_root()
+        meson.current_build_dir(),
+        meson.current_source_dir()
         ]
     )
 endif
