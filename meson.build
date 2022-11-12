@@ -20,6 +20,8 @@ project('open5gs', 'c', 'cpp',
     license : 'AGPL-3.0-or-later',
     meson_version : '>= 0.43.0',
     default_options : [
+        'warning_level=2',
+        'werror=true',
         'c_std=gnu89',
     ],
 )
@@ -57,7 +59,6 @@ meson.add_install_script(python3_exe, '-c',
 # Compiler flags
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     possible_cc_flags = [
-        '-Wextra',
         '-Wlogical-op',
         '-Werror=missing-include-dirs',
         '-Werror=pointer-arith',
