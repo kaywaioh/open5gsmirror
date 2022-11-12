@@ -21,7 +21,6 @@ project('open5gs', 'c', 'cpp',
     meson_version : '>= 0.43.0',
     default_options : [
         'warning_level=2',
-        'werror=true',
         'c_std=gnu89',
     ],
 )
