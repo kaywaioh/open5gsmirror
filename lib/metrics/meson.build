@@ -26,26 +26,30 @@ libmetrics_dependencies = [libapp_dep]
 metrics_impl_optval = get_option('metrics_impl')
 
 if metrics_impl_optval == 'prometheus'
-    # Note: This requires meson >= 0.51.0:
-    # 0.47.0: {'check arg in run_command'}
-    # 0.50.0: {'CMake Module'}
-    # 0.51.0: {'subproject'}
+# Note: This requires meson >= 0.51.0:
+# 0.47.0: {'check arg in run_command'}
+# 0.50.0: {'CMake Module'}
+# 0.51.0: {'subproject'}
 
     libmicrohttpd_dep = dependency('libmicrohttpd', version: '>=0.9.40')
 
     cmake = import('cmake')
     prometheus_client_c_proj = cmake.subproject('prometheus-client-c')
-    # generated cmake subproject seems to include
-    # open5gs/subprojects/prometheus-client-c/__CMake_build as include, which
-    # doesn't exist and fail:
+# generated cmake subproject seems to include
+# open5gs/subprojects/prometheus-client-c/__CMake_build as include, which
+# doesn't exist and fail:
     missing_include_dir = join_paths(meson.current_source_dir(), '../../subprojects/prometheus-client-c/__CMake_build')
-    run_command('mkdir', '-p', missing_include_dir, check: true)
+    if meson.version().version_compare('>=0.47.0')
+        run_command('mkdir', '-p', missing_include_dir, check: true)
+    else
+        run_command('mkdir', '-p', missing_include_dir)
+    endif
     libprom_dep = prometheus_client_c_proj.dependency('prom')
 
     libmetrics_dependencies = libmetrics_dependencies + [libprom_dep, libmicrohttpd_dep]
     libmetrics_file_list = libmetrics_file_list + ' prometheus/context.c'
 else
-   libmetrics_file_list = libmetrics_file_list + ' void/context.c'
+    libmetrics_file_list = libmetrics_file_list + ' void/context.c'
 endif
 
 libmetrics_sources = files(libmetrics_file_list.split())
