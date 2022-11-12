@@ -156,7 +156,7 @@ endif
 
 # Check for /dev/urandom
 if meson.version().version_compare('>=0.47.0')
-     dev_urandom = run_command('[', '-c', '/dev/urandom', ']', check: true)
+     dev_urandom = run_command('[', '-c', '/dev/urandom', ']', check: false)
 else
      dev_urandom = run_command('[', '-c', '/dev/urandom', ']')
 endif
