@@ -64,7 +64,6 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     possible_cc_flags = [
         '-Wextra',
         '-Wlogical-op',
-        '-Werror=missing-include-dirs',
         '-Werror=pointer-arith',
         '-Werror=init-self',
         '-Wfloat-equal',
