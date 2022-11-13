@@ -25,8 +25,8 @@ libmetrics_dependencies = [libapp_dep]
 
 metrics_impl_optval = get_option('metrics_impl')
 
-if metrics_impl_optval == 'prometheus'
-#if meson.version().version_compare('>=0.51.0')
+#if metrics_impl_optval == 'prometheus'
+if meson.version().version_compare('>=0.51.0')
 # Note: This requires meson >= 0.51.0:
 # 0.47.0: {'check arg in run_command'}
 # 0.50.0: {'CMake Module'}
