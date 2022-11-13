@@ -106,13 +106,8 @@ ogs_metrics_context_t *ogs_metrics_self(void)
 
 int ogs_metrics_context_parse_config(const char *local)
 {
-    int family = AF_UNSPEC;
-    const char *hostname = NULL;
-    uint16_t port = DEFAULT_PROMETHEUS_HTTP_PORT;
-    ogs_sockaddr_t *addr = NULL;
     yaml_document_t *document = NULL;
     ogs_yaml_iter_t root_iter;
-    const char *v;
 
     document = ogs_app()->document;
     ogs_assert(document);
@@ -128,29 +123,41 @@ int ogs_metrics_context_parse_config(const char *local)
                 const char *local_key = ogs_yaml_iter_key(&local_iter);
                 ogs_assert(local_key);
                 if (!strcmp(local_key, "metrics")) {
+
+                    int family = AF_UNSPEC;
+                    const char *hostname = NULL;
+                    uint16_t port = DEFAULT_PROMETHEUS_HTTP_PORT;
+                    ogs_sockaddr_t *addr = NULL;
+
                     ogs_yaml_iter_t metrics_iter;
                     ogs_yaml_iter_recurse(&local_iter, &metrics_iter);
                     while (ogs_yaml_iter_next(&metrics_iter)) {
-                        const char *metrics_key = ogs_yaml_iter_key(&metrics_iter);
+                        const char *metrics_key =
+                            ogs_yaml_iter_key(&metrics_iter);
                         ogs_assert(metrics_key);
                         if (!strcmp(metrics_key, "addr")) {
-                            if ((v = ogs_yaml_iter_value(&metrics_iter)))
-                                hostname = v;
+                            const char *v = ogs_yaml_iter_value(&metrics_iter);
+                            if (v) hostname = v;
                         } else if (!strcmp(metrics_key, "port")) {
-                            if ((v = ogs_yaml_iter_value(&metrics_iter)))
-                                port = atoi(v);
+                            const char *v = ogs_yaml_iter_value(&metrics_iter);
+                            if (v) port = atoi(v);
                         }
+                    }
+
+                    if (hostname) {
+                        ogs_assert(OGS_OK == ogs_addaddrinfo(
+                                    &addr, family, hostname, port, AI_PASSIVE));
+                        if (self.node.addr)
+                            ogs_freeaddrinfo(self.node.addr);
+                        ogs_assert(OGS_OK == ogs_copyaddrinfo(
+                                    &self.node.addr, addr));
+                        ogs_freeaddrinfo(addr);
                     }
                 }
             }
         }
     }
-    ogs_assert(OGS_OK ==
-       ogs_addaddrinfo(&addr, family, hostname, port, AI_PASSIVE));
-    if (self.node.addr)
-        ogs_freeaddrinfo(self.node.addr);
-    ogs_assert(OGS_OK == ogs_copyaddrinfo(&self.node.addr, addr));
-    ogs_freeaddrinfo(addr);
+
     return OGS_OK;
 }
 
@@ -315,14 +322,18 @@ static int ogs_metrics_context_mhd_server_start(ogs_metrics_context_t *ctx)
 
     hostname = ogs_gethostname(addr);
     if (hostname)
-        ogs_info("Prometheus mhd_server() [%s]:%d", hostname, OGS_PORT(addr));
+        ogs_info("metrics_server() [http://%s]:%d",
+                hostname, OGS_PORT(addr));
     else
-        ogs_info("Prometheus mhd_server() [%s]:%d", OGS_ADDR(addr, buf), OGS_PORT(addr));
+        ogs_info("metrics_server() [http://%s]:%d",
+                OGS_ADDR(addr, buf), OGS_PORT(addr));
+
     return OGS_OK;
 }
 void ogs_metrics_context_open(ogs_metrics_context_t *ctx)
 {
-    ogs_assert(ogs_metrics_context_mhd_server_start(ctx) == OGS_OK);
+    if (ctx->node.addr)
+        ogs_assert(ogs_metrics_context_mhd_server_start(ctx) == OGS_OK);
 }
 
 static int ogs_metrics_context_mhd_server_stop(ogs_metrics_context_t *ctx)
