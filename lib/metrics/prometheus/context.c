@@ -87,12 +87,12 @@ void ogs_metrics_context_final(void)
     ogs_metrics_spec_t *spec = NULL, *next = NULL;
     ogs_assert(context_initialized == 1);
 
-    ogs_metrics_server_remove_all();
-
     ogs_list_for_each_entry_safe(&self.spec_list, next, spec, entry) {
         ogs_metrics_spec_free(spec);
     }
     prom_collector_registry_destroy(PROM_COLLECTOR_REGISTRY_DEFAULT);
+
+    ogs_metrics_server_remove_all();
 
     ogs_pool_final(&metrics_spec_pool);
     ogs_pool_final(&metrics_server_pool);
@@ -592,7 +592,7 @@ void ogs_metrics_spec_free(ogs_metrics_spec_t *spec)
     ogs_metrics_inst_t *inst = NULL, *next = NULL;
     unsigned int i;
 
-    ogs_list_remove(&spec->ctx->spec_list, spec);
+    ogs_list_remove(&spec->ctx->spec_list, &spec->entry);
 
     ogs_list_for_each_entry_safe(&spec->inst_list, next, inst, entry) {
         ogs_metrics_inst_free(inst);
