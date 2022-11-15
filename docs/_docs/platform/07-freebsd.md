@@ -107,7 +107,7 @@ $ sudo sysctl -w net.inet6.ip6.forwarding=1
 
 Install the depedencies for building the source code.
 ```bash
-$ sudo pkg install meson ninja gcc bison gsed pkgconf git mongo-c-driver gnutls libgcrypt libidn libyaml libmicrohttpd nghttp2 talloc
+$ sudo pkg install meson ninja gcc bison gsed pkgconf git cmake mongo-c-driver gnutls libgcrypt libidn libyaml libmicrohttpd nghttp2 talloc
 ```
 
 Configure gcc PATH
