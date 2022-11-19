@@ -355,5 +355,5 @@ $ npm ci
 The WebUI runs as an [npm](https://www.npmjs.com/) script.
 
 ```bash
-$ npm run dev
+$ DB_URI=mongodb://127.0.0.1/open5gs HOSTNAME=0.0.0.0 npm run dev
 ```
