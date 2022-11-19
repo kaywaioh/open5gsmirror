@@ -35,7 +35,15 @@ if meson.version().version_compare('>=0.51.0')
     libmicrohttpd_dep = dependency('libmicrohttpd', version: '>=0.9.40')
 
     cmake = import('cmake')
-    prometheus_client_c_proj = cmake.subproject('prometheus-client-c')
+    if meson.version().version_compare('>=0.55.0')
+      opt_var = cmake.subproject_options()
+      opt_var.add_cmake_defines({'CMAKE_INSTALL_LIBDIR': libdir})
+      prometheus_client_c_proj = cmake.subproject(
+        'prometheus-client-c', options: opt_var)
+    else
+      prometheus_client_c_proj = cmake.subproject('prometheus-client-c')
+    endif
+
 #
 # @acetcom
 # We removed -Werror=missing-include-dirs in possible_cc_flags
@@ -69,6 +77,7 @@ libmetrics = library('ogsmetrics',
     c_args : '-DOGS_METRICS_COMPILATION',
     include_directories : [libmetrics_inc, libinc],
     dependencies : libmetrics_dependencies,
+    install_rpath: libdir,
     install : true)
 
 libmetrics_dep = declare_dependency(
