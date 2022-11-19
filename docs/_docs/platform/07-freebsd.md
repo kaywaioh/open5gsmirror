@@ -105,7 +105,7 @@ $ sudo sysctl -w net.inet6.ip6.forwarding=1
 ### Load the SCTP kernel module
 ---
 
-Change `/etc/rc.conf` as below.
+Update `/etc/rc.conf` to load the SCTP kernel module.
 
 ```diff
 $ diff -u /etc/rc.conf.old /etc/rc.conf.new
@@ -118,13 +118,22 @@ $ diff -u /etc/rc.conf.old /etc/rc.conf.new
 +kld_list="sctp"
 ```
 
-To load the SCTP module, you must reboot as shown below.
+This is important that you must reboot as shown below.
 
 ```bash
 [host] $ vagrant halt
 [host] $ vagrant up --provider virtualbox
 [host] $ # ssh back into the VM after it reboots...
 [host] $ vagrant ssh
+```
+
+Check the SCTP kernel module
+
+```bash
+$ sudo modprobe sctp
+$ # Check that SCTP was loaded successfully:
+$ sudo dmesg | grep sctp
+[  639.971360] sctp: Hash tables configured (bind 256/256)
 ```
 
 ### Building Open5GS
