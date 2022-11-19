@@ -48,13 +48,13 @@ else
 python3_exe = join_paths(python3.path())
 endif
 mkdir_p = 'import os; os.makedirs("@0@", exist_ok=True) if not os.environ.get("DESTDIR") else False;'
+symlink = 'import os; os.symlink("@0@", "@1@") if not os.environ.get("DESTDIR") and not os.path.islink("@1@") else False;'
 install_conf = 'import os; import shutil; shutil.copy("@0@", "@1@") if not os.environ.get("DESTDIR") and not os.path.isfile(os.path.join("@1@", os.path.split("@0@")[1])) else False;'
 cppcheck = find_program('cppcheck', required: false)
 clangtidy = find_program('run-clang-tidy', required: false) # requires clang-tools package
 if clangtidy.found() != true
     clangtidy = find_program('clang-tidy', required: false)
 endif
-
 
 meson.add_install_script(python3_exe, '-c',
         mkdir_p.format(join_paths(localstatedir, 'log', 'open5gs')))
