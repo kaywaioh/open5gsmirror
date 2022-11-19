@@ -86,13 +86,13 @@ $ sudo dnf config-manager --set-enabled elrepo-testing
 Create a repository file to install the MongoDB packages:
 
 ```bash
-$ sudo sh -c 'cat << EOF > /etc/yum.repos.d/mongodb-org-3.6.repo
-[mongodb-org-3.6]
+$ sudo sh -c 'cat << EOF > /etc/yum.repos.d/mongodb-org-6.0.repo
+[mongodb-org-6.0]
 name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/\$releasever/mongodb-org/3.6/x86_64/
+baseurl=https://repo.mongodb.org/yum/redhat/\$releasever/mongodb-org/6.0/x86_64/
 gpgcheck=1
 enabled=1
-gpgkey=https://www.mongodb.org/static/pgp/server-3.6.asc
+gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc
 EOF'
 ```
 
@@ -109,7 +109,7 @@ a base CentOS Stream 8 installation.
 
 
 ```bash
-$ sudo dnf install python3 meson ninja-build gcc gcc-c++ flex bison git cmake lksctp-tools-devel libidn-devel gnutls-devel libgcrypt-devel openssl-devel cyrus-sasl-devel libyaml-devel mongo-c-driver-devel libmicrohttpd-devel libcurl-devel libnghttp2-devel libtalloc-devel
+$ sudo dnf install python3 meson cmake ninja-build gcc gcc-c++ flex bison git cmake lksctp-tools-devel libidn-devel gnutls-devel libgcrypt-devel openssl-devel cyrus-sasl-devel libyaml-devel mongo-c-driver-devel libmicrohttpd-devel libcurl-devel libnghttp2-devel libtalloc-devel
 ```
 
 ### Install iproute IP interface tools.
