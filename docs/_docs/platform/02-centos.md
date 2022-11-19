@@ -341,6 +341,7 @@ open5gs-hssd   open5gs-pcfd   open5gs-sgwud  open5gs-upfd
 
 Install Node.js:
 ```bash
+$ curl -sL https://rpm.nodesource.com/setup_18.x | sudo -E bash -
 $ sudo dnf install nodejs
 ```
 
