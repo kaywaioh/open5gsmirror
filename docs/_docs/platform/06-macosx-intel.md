@@ -101,7 +101,7 @@ $ export PATH="/usr/local/opt/bison/bin:$PATH"
 
 Configure OpenSSL PKG_CONFIG_PATH
 ```bash
-$ export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig:$PKG_CONFIG_PATH"
+$ export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig:$PKG_CONFIG_PATH"
 ```
 
 Install Meson using Homebrew.
