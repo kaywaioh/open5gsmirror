@@ -49,7 +49,7 @@ if meson.version().version_compare('>=0.51.0')
 #    else
 #      prometheus_client_c_proj = cmake.subproject('prometheus-client-c')
 #    endif
-      prometheus_client_c_proj = cmake.subproject('prometheus-client-c')
+    prometheus_client_c_proj = cmake.subproject('prometheus-client-c')
 
 #
 # @acetcom
