@@ -452,7 +452,7 @@ static int ogs_pfcp_xact_update_rx(ogs_pfcp_xact_t *xact, uint8_t type)
     xact->seq[xact->step].type = type;
 
     /* Step */
-    xact->step++;
+//    xact->step++;
 
     return OGS_OK;
 }
