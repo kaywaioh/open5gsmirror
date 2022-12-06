@@ -116,7 +116,7 @@ static void regenerate_all_timer_duration(void)
          (self.time.message.pfcp.n1_response_rcount + 1));
     ogs_assert(self.time.message.pfcp.t1_response_duration);
 
-#define PFCP_N1_HOLDING_RETRY_COUNT 10
+#define PFCP_N1_HOLDING_RETRY_COUNT 30
     self.time.message.pfcp.n1_holding_rcount = PFCP_N1_HOLDING_RETRY_COUNT;
     self.time.message.pfcp.t1_holding_duration =
         self.time.message.pfcp.n1_response_rcount *
