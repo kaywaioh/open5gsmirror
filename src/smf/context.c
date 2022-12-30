@@ -1969,7 +1969,7 @@ smf_bearer_t *smf_qos_flow_add(smf_sess_t *sess)
         ogs_assert_if_reached();
     ul_pdr->outer_header_removal.gtpu_extheader_deletion =
         OGS_PFCP_PDU_SESSION_CONTAINER_TO_BE_DELETED;
-
+    ogs_info("smf_qos_flow_add");
     /* FAR */
     dl_far = ogs_pfcp_far_add(&sess->pfcp);
     ogs_assert(dl_far);
@@ -2382,7 +2382,7 @@ smf_bearer_t *smf_bearer_add(smf_sess_t *sess)
     ogs_assert(ul_pdr->apn);
 
     ul_pdr->src_if = OGS_PFCP_INTERFACE_ACCESS;
-
+    ogs_info("smf_bearer_add");
     ul_pdr->outer_header_removal_len = 1;
     if (sess->session.session_type == OGS_PDU_SESSION_TYPE_IPV4) {
         ul_pdr->outer_header_removal.description =
